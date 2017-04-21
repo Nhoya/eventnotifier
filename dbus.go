@@ -19,6 +19,11 @@ type dbusServer struct {
 	run bool
 }
 
+type slmData struct {
+    Msg string
+    FullScreen bool
+}
+
 func newDbusServer() (*dbusServer, error) {
 	conn, err := dbus.SystemBus()
 	
@@ -44,9 +49,9 @@ func newDbusServer() (*dbusServer, error) {
 	return ds, nil
 }
 
-func (ds *dbusServer) Alert(message string) *dbus.Error {
-	log.Printf(message)
-        dn.show("sysevent", message, true)
+func (ds *dbusServer) Alert(obj slmData) *dbus.Error {
+	log.Printf(obj.Msg)
+    dn.show("sysevent", obj.Msg, obj.FullScreen)
 
 	return nil
 }

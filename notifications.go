@@ -29,12 +29,14 @@ func (dn *DesktopNotifications) show(cat, message string, showFullscreen bool) e
 	//hints[notify.HintResident] = true
 	hints[notify.HintTransient] = false
 	hints[notify.HintActionIcons] = "sublogmon"
+	icon := "dialog-warning"
 	if showFullscreen {
 		hints[notify.HintUrgency] = notify.UrgencyCritical
+		icon = "dialog-error"
 	}
 	notification := notify.Notification{
 		AppName: "EventNotifier",
-		AppIcon: "dialog-warning",
+		AppIcon: icon,
 		Timeout: notify.ExpiresNever,
 		Hints:   hints,
 	}

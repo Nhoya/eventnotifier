@@ -1,7 +1,7 @@
 package main
 
 import (
-//	"fmt"
+//  "fmt"
         "github.com/godbus/dbus"
 )
 
@@ -10,7 +10,8 @@ type dbusObject struct {
 }
 
 type slmData struct {
-	Msg string
+    Msg string
+    FullScreen bool
 }
 
 func newDbusObject() (*dbusObject, error) {
@@ -24,8 +25,13 @@ func newDbusObject() (*dbusObject, error) {
 }
 
 func (ob *dbusObject) alertObj(Msg string) {
-//	fmt.Println("id = ", id)
-//	fmt.Println("xyz: ", line)
-	dobj := slmData{Msg}
-        ob.Call("com.subgraph.EventNotifier.Alert", 0, dobj)
+//  fmt.Println("id = ", id)
+//  fmt.Println("xyz: ", line)
+    dobj := slmData{Msg, true}
+    call := ob.Call("com.subgraph.EventNotifier.Alert", 0, dobj)
+    if call.Err != nil {
+        panic(call.Err)
+    }
 }
+
+

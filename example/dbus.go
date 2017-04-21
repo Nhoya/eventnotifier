@@ -5,6 +5,9 @@ import (
         "github.com/godbus/dbus"
 )
 
+const busName = "com.NSAway.EventNotifier"
+const objectPath = "/com/NSAway/EventNotifier"
+
 type dbusObject struct {
         dbus.BusObject
 }
@@ -12,6 +15,7 @@ type dbusObject struct {
 type slmData struct {
     Msg string
     FullScreen bool
+    Priority int
 }
 
 func newDbusObject() (*dbusObject, error) {
@@ -21,14 +25,12 @@ func newDbusObject() (*dbusObject, error) {
                 return nil, err
         }
 
-        return &dbusObject{conn.Object("com.subgraph.EventNotifier", "/com/subgraph/EventNotifier")}, nil
+        return &dbusObject{conn.Object(busName, objectPath)}, nil
 }
 
-func (ob *dbusObject) alertObj(Msg string) {
-//  fmt.Println("id = ", id)
-//  fmt.Println("xyz: ", line)
-    dobj := slmData{Msg, true}
-    call := ob.Call("com.subgraph.EventNotifier.Alert", 0, dobj)
+func (ob *dbusObject) alertObj(Msg string, FullScreen bool, Priority int) {
+    dobj := slmData{Msg, FullScreen, Priority}
+    call := ob.Call("com.NSAway.EventNotifier.Alert", 0, dobj)
     if call.Err != nil {
         panic(call.Err)
     }

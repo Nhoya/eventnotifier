@@ -2,17 +2,12 @@ package main
 
 import (
 	"errors"
-	//"path"
-
 	"github.com/godbus/dbus"
-	//        "github.com/godbus/dbus/introspect"
-	"log"
-//	"github.com/op/go-logging"
 )
 
-const busName = "com.subgraph.EventNotifier"
-const objectPath = "/com/subgraph/EventNotifier"
-const interfaceName = "com.subgraph.EventNotifier"
+const busName = "com.NSAway.EventNotifier"
+const objectPath = "/com/NSAway/EventNotifier"
+const interfaceName = "com.NSAway.EventNotifier"
 
 type dbusServer struct {
 	conn *dbus.Conn
@@ -22,11 +17,11 @@ type dbusServer struct {
 type slmData struct {
     Msg string
     FullScreen bool
+    Priority int
 }
 
 func newDbusServer() (*dbusServer, error) {
 	conn, err := dbus.SystemBus()
-	
 	if err != nil {
 		return nil, err
 	}
@@ -50,8 +45,7 @@ func newDbusServer() (*dbusServer, error) {
 }
 
 func (ds *dbusServer) Alert(obj slmData) *dbus.Error {
-	log.Printf(obj.Msg)
-    dn.show("sysevent", obj.Msg, obj.FullScreen)
+    dn.show("sysevent", obj.Msg, obj.FullScreen, obj.Priority)
 
 	return nil
 }
